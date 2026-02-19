@@ -1,4 +1,12 @@
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createBrowserClient } from "@supabase/ssr";
 
-// Initialize the Supabase client
-export const supabase = createClientComponentClient();
+// Browser client for client components
+export function createClient() {
+    return createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+}
+
+// Legacy export for backward compatibility
+export const supabase = createClient();

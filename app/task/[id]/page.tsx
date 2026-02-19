@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import {
     ArrowLeft,
@@ -43,7 +43,7 @@ function priorityBadge(priority: string | null) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function TaskDetailPage({ params }: { params: { id: string } }) {
-    const supabase = createClientComponentClient();
+    const supabase = createClient();
     const router = useRouter();
 
     const [task, setTask] = useState<any>(null);

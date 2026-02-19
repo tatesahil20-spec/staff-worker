@@ -1,30 +1,64 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(req: NextRequest) {
-    const res = NextResponse.next()
-    const supabase = createMiddlewareClient({ req, res })
+export async function middleware(request: NextRequest) {
+    let supabaseResponse = NextResponse.next({
+        request,
+    });
 
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                getAll() {
+                    return request.cookies.getAll();
+                },
+                setAll(cookiesToSet) {
+                    cookiesToSet.forEach(({ name, value }) =>
+                        request.cookies.set(name, value)
+                    );
+                    supabaseResponse = NextResponse.next({
+                        request,
+                    });
+                    cookiesToSet.forEach(({ name, value, options }) =>
+                        supabaseResponse.cookies.set(name, value, options)
+                    );
+                },
+            },
+        }
+    );
+
+    // Refresh session - IMPORTANT: do not remove this line
     const {
-        data: { session },
-    } = await supabase.auth.getSession()
+        data: { user },
+    } = await supabase.auth.getUser();
 
-    // If there is no session and the user is trying to access a protected route,
-    // redirect them to the login page.
-    if (!session && req.nextUrl.pathname !== '/login') {
-        return NextResponse.redirect(new URL('/login', req.url))
+    // Redirect unauthenticated users to /login (except for /login itself)
+    if (
+        !user &&
+        !request.nextUrl.pathname.startsWith("/login") &&
+        !request.nextUrl.pathname.startsWith("/_next") &&
+        !request.nextUrl.pathname.startsWith("/api") &&
+        !request.nextUrl.pathname.includes(".")
+    ) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/login";
+        return NextResponse.redirect(url);
     }
 
-    // If there is a session and the user is trying to access the login page,
-    // redirect them to the home page (or wherever you want signed-in users to go).
-    if (session && req.nextUrl.pathname === '/login') {
-        return NextResponse.redirect(new URL('/home', req.url))
+    // Redirect authenticated users away from /login to /home
+    if (user && request.nextUrl.pathname === "/login") {
+        const url = request.nextUrl.clone();
+        url.pathname = "/home";
+        return NextResponse.redirect(url);
     }
 
-    return res
+    return supabaseResponse;
 }
 
 export const config = {
-    matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
-}
+    matcher: [
+        "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    ],
+};

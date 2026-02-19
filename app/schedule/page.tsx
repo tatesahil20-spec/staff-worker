@@ -1,5 +1,4 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
@@ -36,8 +35,7 @@ function formatDate(dateString: string) {
 }
 
 export default async function SchedulePage() {
-    const cookieStore = cookies();
-    const supabase = createServerComponentClient({ cookies: () => cookieStore });
+    const supabase = createServerSupabaseClient();
 
     const {
         data: { session },
