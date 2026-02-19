@@ -1,0 +1,6 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[681,951],{7557:function(e,t,n){Promise.resolve().then(n.bind(n,756)),Promise.resolve().then(n.t.bind(n,5250,23))},756:function(e,t,n){"use strict";n.r(t),n.d(t,{default:function(){return l}});var o=n(3827),r=n(8714),i=n(7907),s=n(8994);/**
+ * @license lucide-react v0.330.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */let a=(0,n(7461).Z)("LogOut",[["path",{d:"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4",key:"1uf3rs"}],["polyline",{points:"16 17 21 12 16 7",key:"1gabdz"}],["line",{x1:"21",x2:"9",y1:"12",y2:"12",key:"1uyos4"}]]);var u=n(4090);function l(){let e=(0,r.createClientComponentClient)(),t=(0,i.useRouter)(),[n,l]=(0,u.useState)(!1);async function c(){if(!n){l(!0);try{await e.auth.signOut(),t.refresh(),t.push("/login")}catch(e){console.error("Logout failed:",e),l(!1)}}}return(0,o.jsx)("button",{onClick:c,disabled:n,className:"p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-white/20 transition-all active:scale-95 group",title:"Logout",children:n?(0,o.jsx)(s.Z,{className:"w-5 h-5 text-white animate-spin"}):(0,o.jsx)(a,{className:"w-5 h-5 text-white group-hover:text-red-300 transition-colors"})})}}},function(e){e.O(0,[284,250,971,69,744],function(){return e(e.s=7557)}),_N_E=e.O()}]);
