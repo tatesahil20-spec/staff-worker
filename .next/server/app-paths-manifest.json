@@ -1,8 +1,8 @@
 {
   "/_not-found": "app/_not-found.js",
-  "/home/page": "app/home/page.js",
   "/page": "app/page.js",
   "/schedule/page": "app/schedule/page.js",
   "/login/page": "app/login/page.js",
-  "/task/[id]/page": "app/task/[id]/page.js"
+  "/task/[id]/page": "app/task/[id]/page.js",
+  "/home/page": "app/home/page.js"
 }
